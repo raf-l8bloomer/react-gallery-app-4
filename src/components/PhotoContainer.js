@@ -4,7 +4,6 @@ import NotFound from "./NotFound.js"
 
 const PhotoContainer = props => {
   const results = props.data;
-  console.log(results);
   let photos = results.length > 0 ? results.map(photo => <Photos url={`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id} />)
   : <NotFound />;
 
