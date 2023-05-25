@@ -1,20 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect, useState, Navigate } from "react";
+import { Routes, Route, useParams } from "react-router-dom";
 import axios from "axios";
 
 import './css/index.css';
 
 // App Components
 import SearchForm from "./components/SearchForm.js";
-import Nav from "./components/Nav.js";
 import PhotoContainer from "./components/PhotoContainer.js";
+
+import apiKey from "./config.js";
+
 
 
 function App() {
   const [photos, setPhotos] = useState([]);
-  useEffect(() => {
+  const [query, setQuery] = useState("");
 
-    axios.get("https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=99277c0f3ec693ba0aedf92a6e4e333c&tags=cats&per_page=24&format=json&nojsoncallback=1")
+  const { id } = useParams();
+  console.log(id);
+  
+  useEffect(() => {
+    handleQueryChange(query);
+  }, [query]);
+
+  const handleQueryChange = searchText => {
+    setQuery(searchText);
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
        setPhotos(response.data.photos.photo);
       })
@@ -22,17 +33,17 @@ function App() {
         // handle error
         console.log("Error fetching and parsing data", error);
       })
-  }, []);
+  }
 
   return (
     <div className="container">
-      <SearchForm />
-      <Nav />
+      <SearchForm changeQuery={handleQueryChange}/>
       <PhotoContainer data={photos} />
       <Routes>
-        <Route path="cats" element="" />
+        <Route path="/" element= "" />
+        <Route path="cats" element= "" />
         <Route path="dogs" element="" />
-        <Route path="computers" element="" />
+        <Route path="computers" element= "" />
       </Routes>
     </div>
   );

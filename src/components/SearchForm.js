@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Nav from './Nav.js';
 
 
-const SearchForm = () => {
+const SearchForm = props => {
+  const [searchText, setSearchText] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.changeQuery(searchText);
+    e.currentTarget.reset();
+}
 
   return (
-    <form className="search-form">
+    <>
+    <form className="search-form" onSubmit ={e => handleSubmit(e)}>
       <input type="search"
+        onChange={e => setSearchText(e.target.value)}
         name="search"
         placeholder="Search"
         required />
@@ -17,6 +27,8 @@ const SearchForm = () => {
         </svg>
       </button>
     </form>
+    <Nav changeQuery={props.changeQuery} />
+  </>
   )
 }
 
