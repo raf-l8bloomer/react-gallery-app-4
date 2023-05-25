@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Nav from './Nav.js';
+
 
 
 const SearchForm = props => {
@@ -27,7 +27,6 @@ const SearchForm = props => {
         </svg>
       </button>
     </form>
-    <Nav changeQuery={props.changeQuery} />
   </>
   )
 }

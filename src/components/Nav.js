@@ -2,20 +2,15 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 
-const Nav = props => {
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    props.changeQuery(e.target.text);
-  }
+const Nav = () => {
 
   return (
     <>
         <nav className="main-nav">
         <ul>
-          <li><NavLink to='/cats' onClick={handleClick}>Cats</NavLink></li>
-          <li><NavLink to='/dogs' onClick={handleClick}>Dogs</NavLink></li>
-          <li><NavLink to='/computers' onClick={handleClick}>Computers</NavLink></li>
+          <li><NavLink to='/cats'>Cats</NavLink></li>
+          <li><NavLink to='/dogs'>Dogs</NavLink></li>
+          <li><NavLink to='/computers'>Computers</NavLink></li>
         </ul>
       </nav>
      </>
