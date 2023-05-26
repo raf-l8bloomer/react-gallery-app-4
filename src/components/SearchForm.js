@@ -9,7 +9,6 @@ const SearchForm = props => {
     e.preventDefault();
     props.changeQuery(searchText);
     e.currentTarget.reset();
-    console.log(searchText);
 }
 
   return (
