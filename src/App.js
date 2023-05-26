@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useNavigate, navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 
 import './css/index.css';
@@ -20,20 +20,11 @@ function App() {
   const [query, setQuery] = useState("cats");
   
   useEffect(() => {
-    let route = "";
-    if (query === "popular") {
-      route = "cats";
-    } else if (query === "cats" || query === "dogs" || query === "computers") {
-      route = query;
-    }
-  
-    // Navigate to the appropriate route
-    navigate(`/${route}`);
 
     handleQueryChange(query);
-    handleCatImages();
-    handleDogImages();
-    handleComputerImages();
+    handleNavImages("cats", setCatImages);
+    handleNavImages("dogs", setDogImages);
+    handleNavImages("computers", setComputerImages);
   }, [query]);
 
   const handleQueryChange = searchText => {
@@ -48,39 +39,17 @@ function App() {
       })
   }
 
-  const handleCatImages = () => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=cats&per_page=24&format=json&nojsoncallback=1`)
+  const handleNavImages = (defaultTopics, setDefaultImages) => {
+    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${defaultTopics}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
-        setCatImages(response.data.photos.photo);
+        setDefaultImages(response.data.photos.photo);
       })
       .catch(error => {
         // handle error
         console.log("Error fetching and parsing data", error);
       })
   }
-
-  const handleDogImages = () => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=dogs&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => {
-        setDogImages(response.data.photos.photo);
-      })
-      .catch(error => {
-        // handle error
-        console.log("Error fetching and parsing data", error);
-      })
-  }
-
-  const handleComputerImages = () => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=computers&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => {
-        setComputerImages(response.data.photos.photo);
-      })
-      .catch(error => {
-        // handle error
-        console.log("Error fetching and parsing data", error);
-      })
-  }
-
+  
  
   return (
     <div className="container">
