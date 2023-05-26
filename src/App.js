@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 
 import './css/index.css';
@@ -13,25 +13,36 @@ import apiKey from "./config.js";
 
 
 function App() {
+
+  // All states
   const [photos, setPhotos] = useState([]);
   const [catImages, setCatImages] = useState([])
   const [dogImages, setDogImages] = useState([])
   const [computerImages, setComputerImages] = useState([])
-  const [query, setQuery] = useState("cats");
-  
-  useEffect(() => {
+  const [query, setQuery] = useState("waterfalls");
 
+
+  useEffect(() => {
     handleQueryChange(query);
-    handleNavImages("cats", setCatImages);
-    handleNavImages("dogs", setDogImages);
-    handleNavImages("computers", setComputerImages);
+    handleQueryChange("cats");
+    handleQueryChange("dogs");
+    handleQueryChange("computers");
   }, [query]);
 
+  // Takes search text and gets flickrAPI while saving default nav categories in state
   const handleQueryChange = searchText => {
     setQuery(searchText);
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${searchText}&per_page=24&format=json&nojsoncallback=1`)
       .then(response => {
-        setPhotos(response.data.photos.photo);
+        if (searchText === "cats") {
+          setCatImages(response.data.photos.photo)
+        } else if (searchText === "dogs") {
+          setDogImages(response.data.photos.photo);
+        } else if (searchText === "computers") {
+          setComputerImages(response.data.photos.photo);
+        } else {
+          setPhotos(response.data.photos.photo);
+        }
       })
       .catch(error => {
         // handle error
@@ -39,24 +50,13 @@ function App() {
       })
   }
 
-  const handleNavImages = (defaultTopics, setDefaultImages) => {
-    axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${defaultTopics}&per_page=24&format=json&nojsoncallback=1`)
-      .then(response => {
-        setDefaultImages(response.data.photos.photo);
-      })
-      .catch(error => {
-        // handle error
-        console.log("Error fetching and parsing data", error);
-      })
-  }
-  
- 
+
   return (
     <div className="container">
       <SearchForm changeQuery={handleQueryChange} />
       <Nav />
       <Routes>
-        <Route path="/" element={<Navigate replace to="cats" />} />
+        <Route path="/" element={<PhotoContainer data={photos} />} />
         <Route path="cats" element={<PhotoContainer data={catImages} />} />
         <Route path="dogs" element={<PhotoContainer data={dogImages} />} />
         <Route path="computers" element={<PhotoContainer data={computerImages} />} />
