@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useParams } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 
 import './css/index.css';
@@ -22,7 +22,6 @@ function App() {
   const [query, setQuery] = useState("waterfalls");
   const [loading, setLoading] = useState(true);
 
-  let params = useParams();
 
   useEffect(() => {
     handleQueryChange(query);
@@ -62,7 +61,6 @@ function App() {
   return (
 
     <div className="container">
-    {console.log(params)}
       <SearchForm changeQuery={handleQueryChange} />
       <nav className="main-nav">
         <Nav />
