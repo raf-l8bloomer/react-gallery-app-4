@@ -8,12 +8,12 @@ const PhotoContainer = props => {
   : <NotFound />;
 
   return (
-    <div className="photo-container">
+    <>
       <h2>{props.query}</h2>
       <ul>
         {photos}
       </ul>
-    </div>
+    </>
   )
 }
 
