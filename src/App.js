@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 
 import './css/index.css';
@@ -59,8 +59,8 @@ function App() {
 
 
   return (
-
     <div className="container">
+
       <SearchForm changeQuery={handleQueryChange} />
       <nav className="main-nav">
         <Nav />
@@ -69,14 +69,18 @@ function App() {
         {
           (loading)
             ? <p>Loading...</p>
-            : <Routes>
-              <Route path="/" element={<PhotoContainer data={photos} />} />
-              <Route path="cats" element={<PhotoContainer data={catImages} />} />
-              <Route path="dogs" element={<PhotoContainer data={dogImages} />} />
-              <Route path="computers" element={<PhotoContainer data={computerImages} />} />
-              <Route path="/:searching" element={<PhotoContainer data={photos} />} />
+            : null } 
+            <Routes>
+              <Route path="/" element={<Navigate to="/search" />} />
+              <Route path="search" element={<PhotoContainer data={photos} query={query} />} />
+              <Route path="search/:searching" element={<PhotoContainer data={photos} query={query} />} />
+              <Route path="cats" element={<PhotoContainer data={catImages} query="cats"/>} />
+              <Route path="dogs" element={<PhotoContainer data={dogImages} query="dogs"/>} />
+              <Route path="computers" element={<PhotoContainer data={computerImages} query="computers" />} />
+              
+
             </Routes>
-        }
+      
       </div>
     </div>
   );
